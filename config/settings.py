@@ -163,3 +163,14 @@ TIME_CHOICES = [
     ('0 0 1 * *', 'раз в месяц'),
 ]
 
+#применяем низкоуровневое кэширование
+CACHE_ENABLED = os.getenv('CACHE_ENABLED') == 'True'
+
+if CACHE_ENABLED:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': os.getenv('CACHE_LOCATION'),
+            "TIMEOUT": 300
+        }
+    }

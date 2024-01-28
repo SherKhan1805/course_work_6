@@ -14,6 +14,7 @@ pillow = "^10.2.0"
 python-dotenv = "^1.0.0"
 apscheduler = "^3.10.4"
 scheduler = "^0.8.5"
+redis = "^5.0.1"
 
 
 [build-system]

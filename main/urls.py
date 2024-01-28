@@ -12,6 +12,4 @@ urlpatterns = [
     path('main/like/', like_view, name='like_view'),
     path('administrative_panel/', administrative_panel, name='administrative_panel'),
     path('profile_view/<int:pk>', UserProfileDetailView.as_view(), name='profile_view'),
-
-
 ]

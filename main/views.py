@@ -1,18 +1,16 @@
 from django.contrib.auth.decorators import permission_required
-from django.http import HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy, reverse
+
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.decorators.cache import cache_page
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from blog.forms import BlogForm
 from blog.models import Blog
 from mailing.models import Mailing, Client
-from mailing.views import MailingListView
-from main.models import Likes
+
 from users.models import User
-# from main.models import Match
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -26,7 +24,6 @@ class UserProfileListView(LoginRequiredMixin, ListView):
     """
     model = User
     template_name = 'main/skylove_list_view.html'
-    # permission_required = 'user.view_user'
 
 
 class UserProfileDetailView(LoginRequiredMixin, DetailView):
@@ -39,6 +36,8 @@ class UserProfileDetailView(LoginRequiredMixin, DetailView):
     # permission_required = 'user.view_user'
 
 
+#применяем кэширование контроллера
+@cache_page(60)
 @csrf_exempt
 @require_POST
 def like_view(request):
@@ -58,6 +57,7 @@ def like_view(request):
     except Exception as e:
         print('Error:', e)
         return JsonResponse({'status': 'error', 'message': str(e)})
+
 
 @permission_required('your_app.can_blocked')
 def administrative_panel(request):
